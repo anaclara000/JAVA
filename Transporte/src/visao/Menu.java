@@ -5,14 +5,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
-import modelo.Prato;
+import modelo.Veiculo;
 
 
 public class Menu {
 	
 	static int veiculosCadastrados = 0;
 	private static Scanner scan;
-	static Prato [] veiculos = new Prato [100];
+	static Veiculo [] veiculos = new Veiculo [100];
 	
 	
 	public static void main(String[] args) throws IOException, ParseException{
@@ -47,7 +47,7 @@ public class Menu {
 			
 			for (int i = 0; i < qtdVeiculos; i++) {
 	
-				veiculos[i] = new Prato();
+				veiculos[i] = new Veiculo();
 				
 				
 				System.out.println("Digite a " + (i+1) + " ª placa: ");
