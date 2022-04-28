@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.ArrayList;
 
 public class Dados {
 	
@@ -12,8 +13,30 @@ public class Dados {
 		
 	}
 	
-	public String toString() {
-		return nome + ";" + senha;
+	public boolean validaEmail(String email, ArrayList<Dados> contas) {
+		boolean achou = false;
+		for (Dados dados : contas) {
+			if (this.nome.equals(dados.nome)) {
+				achou = true;
+				break;
+			}
+		}
+		
+		return achou;
 	}
+	
+	public boolean validaSenha(String email, String senha, ArrayList<Dados> contas) {
+		boolean validou = false;
+		
+		for (Dados dados : contas) {
+			if (this.nome.equals(dados.nome) && this.senha.equals(dados.senha)) {
+				validou = true;
+				break;
+			}
+		}
+		
+		return validou;
+	}
+
 }
 

@@ -15,7 +15,7 @@ public class ProcessaDados {
 		
 	}
 
-	public static void saida() {
-			dao.calculo(linhas);
+	public static void saida(String email, String senha) {
+		dao.validarConta(email, senha, linhas);
 	}
 }

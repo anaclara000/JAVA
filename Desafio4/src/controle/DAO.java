@@ -1,10 +1,8 @@
 package controle;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -13,10 +11,8 @@ import modelo.Dados;
 
 public class DAO {
 		
-	private BufferedWriter bw;
 	private BufferedReader br;
 	private String entrada ="C:\\Users\\Desenvolvimento\\Desktop\\work1\\Desafio4\\Arquivo\\usuarios.csv";
-	private String saida ="C:\\Users\\Desenvolvimento\\Desktop\\work1\\Desafio4\\Arquivo\\saida.csv";
 	
 	public ArrayList<Dados> abrir(){
 		ArrayList<Dados> linhas = new ArrayList<>();
@@ -41,18 +37,23 @@ public class DAO {
 		return linhas;
 	}
 	
-	public void calculo(ArrayList<Dados> linhas) {
-		try {
-			bw = new BufferedWriter(new FileWriter(saida));
-			for(Dados d : linhas) {
-				bw.write(d.toString()+"\r\n");
-				
-		}
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+	public boolean validarConta(String email, String senha, ArrayList<Dados> linhas) {
+		Dados d = new Dados(email + ";" + senha);
+		
+		if(d.validaEmail(email, linhas)) {
+			if (d.validaSenha(email, senha, linhas)) {
+				System.out.println("Acesso permitido");
+				return true;
+			} else {
+				System.out.println("Acesso negado");
+				return false;
+			}
+		} else {
+			System.out.println("usuário não encontrado");
+			return false;
 		}
 	}
+
 }
 
 

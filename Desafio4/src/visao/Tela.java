@@ -12,12 +12,11 @@ public class Tela {
 		ProcessaDados.carregar();
 		
 		System.out.println("Digite seu login: ");
-		String login = scan.nextLine();
+		String email = scan.nextLine();
 		
 		System.out.println("Digite sua senha: ");
-		String code = scan.nextLine();
+		String senha = scan.nextLine();
 		
-		System.out.println("Programa em obras. Obrigada!");
-		ProcessaDados.saida();
+		ProcessaDados.saida(email, senha);
 	}
 }
