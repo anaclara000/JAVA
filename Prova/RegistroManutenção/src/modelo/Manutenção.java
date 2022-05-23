@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -20,11 +21,15 @@ public class Manutenção {
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	private DecimalFormat df = new DecimalFormat("#.00");
 
-	public Manutenção(int id, Date data, String equipamento, double custoHora, double tempoGasto) {
+	public Manutenção(int id, String data, String equipamento, double custoHora, double tempoGasto) {
 		this.id = id;
-		this.data = data;
+		try {
+			this.data = sdf.parse(data);
+		} catch (ParseException e) {
+			System.out.println(e.toString());
+		}
 		this.equipamento = equipamento;
-		this.custoHora = Double.parseDouble(df.parse(custoHora).toString());
+		this.custoHora = custoHora;
 		this.tempoGasto = tempoGasto;
 	}
 
@@ -34,12 +39,15 @@ public class Manutenção {
 
 	public Manutenção(String linha) throws ParseException {
 		df.setCurrency(Currency.getInstance(BRASIL));
+		
+		String[] temp = linha.split(";");		
+			
+		this.id = Integer.parseInt(temp[0]);
+		this.data = sdf.parse(temp[1]);
+		this.equipamento = temp[2];
+		this.custoHora = Double.parseDouble(temp[3]);
+		this.tempoGasto = Double.parseDouble(temp[4]);
 
-		this.id = Integer.parseInt(linha.split(";")[0]);
-		this.data = sdf.parse(linha.split(";")[1]);
-		this.equipamento = linha.split(";")[2];
-		this.custoHora = Double.parseDouble(linha.split(";")[3]);
-		this.tempoGasto = Double.parseDouble(linha.split(";")[4]);
 
 	}
 
@@ -68,16 +76,16 @@ public class Manutenção {
 		return custoHora * tempoGasto;
 	}
 
-	public String getId(String s) {
-		return sdf.format(id);
+	public int getId() {
+		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getData(String s) {
-		return sdf.format(data);
+	public Date getData() {
+		return data;
 	}
 
 	public void setData(Date data) {
@@ -92,16 +100,16 @@ public class Manutenção {
 		this.equipamento = equipamento;
 	}
 
-	public String getCustoHora(String s) {
-		return sdf.format(custoHora);
+	public double getCustoHora() {
+		return custoHora;
 	}
 
 	public void setCustoHora(double custoHora) {
 		this.custoHora = custoHora;
 	}
 
-	public String getTempoGasto(String s) {
-		return sdf.format(tempoGasto);
+	public double getTempoGasto() {
+		return tempoGasto;
 	}
 
 	public void setTempoGasto(double tempoGasto) {
@@ -129,11 +137,11 @@ public class Manutenção {
 	}
 
 	public String toString() {
-		return id + "\t" + data + "\t" + equipamento + "\t" + custoHora
+		return id + "\t" + sdf.format(data) + "\t" + equipamento + "\t" + custoHora
 				+ "\t" + tempoGasto + "\n";
 	}
 
 	public String toCSV() {
-		return id + ";" + data + ";" + equipamento + ";" + custoHora + ";" + tempoGasto + "\r\n";
+		return id + ";" + sdf.format(data) + ";" + equipamento + ";" + custoHora + ";" + tempoGasto + "\r\n";
 	}
 }
