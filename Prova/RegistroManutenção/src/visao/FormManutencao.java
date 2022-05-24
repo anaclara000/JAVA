@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Locale;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -44,10 +45,9 @@ public class FormManutencao extends JFrame{
 
 	FormManutencao(){
 		setTitle("Regitro de Manutenção");
-		setBounds(100, 100, 800, 650);
+		setBounds(100, 100, 610, 390);
 		setIconImage(new ImageIcon(imgIco).getImage());
 		painel = new JPanel();
-		painel.setBackground(new Color(128, 128,128));
 		setContentPane(painel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
@@ -57,32 +57,32 @@ public class FormManutencao extends JFrame{
 		tfid = new JTextField(String.format("%d", autoId));
 		tfid.setEditable(false);
 		tfid.setEditable(false);
-		tfid.setBounds(140, 25, 40, 30);
+		tfid.setBounds(40, 25, 40, 30);
 		tfid.setBackground(new Color(215, 215, 215));
 		
 		equip = new JLabel("Nome do Equipamento:");
-		equip.setBounds(20, 60, 120, 30);
-		cbequip = new JComboBox<String>(new String[] { "Equip1", "Equip2", "Equip3" });
-		cbequip.setBounds(140, 60, 300, 30);
+		equip.setBounds(100, 25, 140, 30);
+		cbequip = new JComboBox<String>(new String[] { "Paleterias", "Guindastes", "Comboio" , "Monovias" , "Esteiras"});
+		cbequip.setBounds(235, 25, 150, 30);
 		cbequip.setBackground(new Color(215, 215, 215));
 		
 		data = new JLabel("Data de Hoje:");
-		data.setBounds(20, 95, 120, 30);
+		data.setBounds(20, 70, 120, 30);
 		tfdata = new JTextField();
-		tfdata.setBounds(140, 95, 120, 30);
+		tfdata.setBounds(100, 70, 100, 30);
 		painel.add(tfdata);
 		tfdata.setBackground(new Color(215, 215, 215));
 		
 		custoHora = new JLabel("Custo Hora:");
-		custoHora.setBounds(20, 130, 120, 30);
+		custoHora.setBounds(215, 70, 80, 30);
 		tfcustoHora = new JTextField();
-		tfcustoHora.setBounds(140, 130, 100, 30);
+		tfcustoHora.setBounds(290, 70, 80, 30);
 		tfcustoHora.setBackground(new Color(215, 215, 215));
 		
 		tempoGasto = new JLabel("Tempo gasto:");
-		tempoGasto.setBounds(20, 195, 120, 30);
+		tempoGasto.setBounds(380, 70, 80, 30);
 		tftempoGasto = new JTextField();
-		tftempoGasto.setBounds(140, 195, 100, 30);
+		tftempoGasto.setBounds(460, 70, 80, 30);
 		tftempoGasto.setBackground(new Color(215, 215, 215));
 		
 		
@@ -112,25 +112,26 @@ public class FormManutencao extends JFrame{
 		table = new JTable(tableModel);
 		table.setEnabled(false);
 		rolagem = new JScrollPane(table);
-		rolagem.setBounds(20, 310, 740, 230);
+		rolagem.setBounds(20, 170, 550, 130);
 		painel.add(rolagem);
 
 		
 		create = new JButton("Cadastrar");
-		create.setBounds(650, 20, 110, 30);
+		create.setBounds(60, 120, 110, 30);
+		create.setBackground(new Color(189,236,182));
 		painel.add(create);
 
 		read = new JButton("Buscar");
-		read.setBounds(650, 55, 110, 30);
+		read.setBounds(180, 120, 110, 30);
 		painel.add(read);
 
 		update = new JButton("Alterar");
-		update.setBounds(650, 90, 110, 30);
+		update.setBounds(300, 120, 110, 30);
 		update.setEnabled(false);
 		painel.add(update);
 
 		delete = new JButton("Excluir");
-		delete.setBounds(650, 125, 110, 30);
+		delete.setBounds(420, 120, 110, 30);
 
 		delete.setEnabled(false);
 		painel.add(delete);
@@ -166,12 +167,16 @@ public class FormManutencao extends JFrame{
 	
 	int obterEquipamento(String equipamento) {
 		switch (equipamento) {
-		case "Equip1":
+		case "Paleteiras":
 			return 0;
-		case "Equip2":
+		case "Guindastes":
 			return 1;
-		case "Equip3":
+		case "Comboio":
 			return 2;
+		case "Monovias":
+			return 3;
+		case "Esteiras":
+			return 4;
 		default:
 			return -1;
 		}
