@@ -9,20 +9,20 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class ManutençãoDAO {
+public class ManutencaoDAO {
 
 	private BufferedReader br;
 	private BufferedWriter bw;
 	private String path = "./dados/entrada.csv";
 	
-	public ArrayList<Manutenção> ler() throws ParseException {
-		ArrayList<Manutenção> linhas = new ArrayList<>();
-		Manutenção manu;
+	public ArrayList<Manutencao> ler() throws ParseException {
+		ArrayList<Manutencao> linhas = new ArrayList<>();
+		Manutencao manu;
 		try {
 			br = new BufferedReader(new FileReader(path));
 			String linha = br.readLine();
 			while(linha != null) {
-				manu = new Manutenção(linha);
+				manu = new Manutencao(linha);
 				linhas.add(manu);
 				linha = br.readLine();
 			}
@@ -35,10 +35,10 @@ public class ManutençãoDAO {
 		return linhas;
 	}
 	
-	public void escrever(ArrayList<Manutenção> linhas) {
+	public void escrever(ArrayList<Manutencao> linhas) {
 		try {
 			bw = new BufferedWriter(new FileWriter(path));
-			for (Manutenção m : linhas) {
+			for (Manutencao m : linhas) {
 				bw.write(m.toCSV());
 			}
 			bw.close();

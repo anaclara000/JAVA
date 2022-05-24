@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Manutenção {
+public class Manutencao {
 
 	private int id;
 	private Date data;
@@ -21,7 +21,7 @@ public class Manutenção {
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	private DecimalFormat df = new DecimalFormat("#.00");
 
-	public Manutenção(int id, String data, String equipamento, double custoHora, double tempoGasto) {
+	public Manutencao(int id, String data, String equipamento, double custoHora, double tempoGasto) {
 		this.id = id;
 		try {
 			this.data = sdf.parse(data);
@@ -33,11 +33,11 @@ public class Manutenção {
 		this.tempoGasto = tempoGasto;
 	}
 
-	public Manutenção(int id) {
+	public Manutencao(int id) {
 		this.id = id;
 	}
 
-	public Manutenção(String linha) {
+	public Manutencao(String linha) {
 		df.setCurrency(Currency.getInstance(BRASIL));
 		
 		String[] temp = linha.split(";");		
@@ -68,7 +68,7 @@ public class Manutenção {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Manutenção other = (Manutenção) obj;
+		Manutencao other = (Manutencao) obj;
 		return Objects.equals(BRASIL, other.BRASIL)
 				&& Double.doubleToLongBits(custoHora) == Double.doubleToLongBits(other.custoHora)
 				&& Objects.equals(data, other.data) && Objects.equals(df, other.df)
