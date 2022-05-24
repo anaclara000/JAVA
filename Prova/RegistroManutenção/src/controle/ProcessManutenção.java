@@ -11,11 +11,16 @@ public class ProcessManutenção {
 	public static ArrayList<Manutenção> manutenção = new ArrayList<>();
 	private static ManutençãoDAO md = new ManutençãoDAO();
 	
-	public static void abrir() throws ParseException {
-		manutenção = md.ler();
+	public static void abrir() {
+		try {
+			manutenção = md.ler();
+		} catch (ParseException e) {
+			System.out.println(e.toString());
+		}
 	}
 	
 	public static void salvar() {
 		md.escrever(manutenção);
+		abrir();
 	}
 }

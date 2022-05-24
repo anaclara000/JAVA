@@ -37,15 +37,19 @@ public class Manutenção {
 		this.id = id;
 	}
 
-	public Manutenção(String linha) throws ParseException {
+	public Manutenção(String linha) {
 		df.setCurrency(Currency.getInstance(BRASIL));
 		
 		String[] temp = linha.split(";");		
 			
 		this.id = Integer.parseInt(temp[0]);
-		this.data = sdf.parse(temp[1]);
+		try {
+			this.data = sdf.parse(temp[1]);
+		} catch (ParseException e) {
+			System.out.println(e.toString());
+		}
 		this.equipamento = temp[2];
-		this.custoHora = Double.parseDouble(temp[3]);
+		this.custoHora = Double.parseDouble(temp[3].replace(",", "."));
 		this.tempoGasto = Double.parseDouble(temp[4]);
 
 
@@ -73,7 +77,7 @@ public class Manutenção {
 	}
 
 	public double getTotal() {
-		return custoHora * tempoGasto;
+		return this.custoHora * this.tempoGasto;
 	}
 
 	public int getId() {

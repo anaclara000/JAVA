@@ -13,7 +13,7 @@ public class ManutençãoDAO {
 
 	private BufferedReader br;
 	private BufferedWriter bw;
-	private String path = "C:\\Users\\Desenvolvimento\\Desktop\\Prova\\RegistroManutenção\\dados\\entrada.csv";
+	private String path = "./dados/entrada.csv";
 	
 	public ArrayList<Manutenção> ler() throws ParseException {
 		ArrayList<Manutenção> linhas = new ArrayList<>();
@@ -30,7 +30,7 @@ public class ManutençãoDAO {
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
 		} catch (IOException e) {
-			System.out.println(e);
+			System.out.println(e.toString());
 		}
 		return linhas;
 	}
@@ -43,7 +43,7 @@ public class ManutençãoDAO {
 			}
 			bw.close();
 		} catch (IOException e) {
-			System.out.println(e);
+			System.out.println(e.toString());
 		}
 	}
 }

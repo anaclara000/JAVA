@@ -58,121 +58,101 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		setLayout(null);
 
 		codigoProduto = new JLabel("Código do produto:");
-		codigoProduto.setBounds(20, 20, 120, 30);
+		codigoProduto.setBounds(20, 25, 120, 30);
 		painel.add(codigoProduto);
-		codigoProduto.setForeground(Color.white);
-
-		estoque = new JLabel("Novo Estoque:");
-		estoque.setBounds(20, 55, 120, 30);
-		painel.add(estoque);
-		estoque.setForeground(Color.white);
-
-		qtdEstoque = new JLabel("Qtd. em Estoque:");
-		qtdEstoque.setBounds(285, 55, 120, 30);
-		painel.add(qtdEstoque);
-		qtdEstoque.setForeground(Color.white);
-
-		fornecedor = new JLabel("Fornecedor:");
-		fornecedor.setBounds(20, 90, 120, 30);
-		painel.add(fornecedor);
-		fornecedor.setForeground(Color.white);
-
-		nomeProduto = new JLabel("Nome do Produto:");
-		nomeProduto.setBounds(285, 20, 120, 30);
-		painel.add(nomeProduto);
-		nomeProduto.setForeground(Color.white);
-
-		lucro = new JLabel("Lucro:");
-		lucro.setBounds(340, 90, 120, 30);
-		painel.add(lucro);
-		lucro.setForeground(Color.white);
-
-		precoVenda = new JLabel("Preço de Venda:");
-		precoVenda.setBounds(20, 125, 120, 30);
-		painel.add(precoVenda);
-		precoVenda.setForeground(Color.white);
-
-		precoUnitario = new JLabel("Preço Unitário:");
-		precoUnitario.setBounds(285, 125, 120, 30);
-		painel.add(precoUnitario);
-		precoUnitario.setForeground(Color.white);
-
-		dtFabricacao = new JLabel("Data de Fabricação:");
-		dtFabricacao.setBounds(20, 165, 120, 30);
-		painel.add(dtFabricacao);
-		dtFabricacao.setForeground(Color.white);
-
-		dtValidade = new JLabel("Data de Validade:");
-		dtValidade.setBounds(285, 165, 120, 30);
-		painel.add(dtValidade);
-		dtValidade.setForeground(Color.white);
-
-		rotulos = new JLabel("Cód|Nome|Qtd no Estoque|Fornecedor|Vencimento|Preço|Status:");
-		rotulos.setBounds(20, 340, 600, 30);
-		painel.add(rotulos);
-		rotulos.setForeground(Color.white);
-
 		tfcodigoProduto = new JTextField(String.format("%d", autoId));
 		tfcodigoProduto.setEditable(false);
-		tfcodigoProduto.setBounds(140, 25, 100, 30);
+		tfcodigoProduto.setBounds(140, 25, 40, 30);
 		painel.add(tfcodigoProduto);
 		tfcodigoProduto.setBackground(new Color(215, 215, 215));
 		tfcodigoProduto.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-		tfestoque = new JTextField();
-		tfestoque.setBounds(140, 60, 100, 30);
-		painel.add(tfestoque);
-		tfestoque.setBackground(new Color(215, 215, 215));
-		tfestoque.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-		tfqtdEstoque = new JTextField();
-		tfqtdEstoque.setBounds(405, 60, 100, 30);
-		painel.add(tfqtdEstoque);
-		tfqtdEstoque.setBackground(new Color(215, 215, 215));
-		tfqtdEstoque.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-		tffornecedor = new JTextField();
-		tffornecedor.setBounds(140, 95, 150, 30);
-		painel.add(tffornecedor);
-		tffornecedor.setBackground(new Color(215, 215, 215));
-		tffornecedor.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
+		
+		nomeProduto = new JLabel("Nome do Produto:");
+		nomeProduto.setBounds(20, 60, 120, 30);
+		painel.add(nomeProduto);
 		tfnomeProduto = new JTextField();
-		tfnomeProduto.setBounds(405, 25, 100, 30);
+		tfnomeProduto.setBounds(140, 60, 300, 30);
 		painel.add(tfnomeProduto);
 		tfnomeProduto.setBackground(new Color(215, 215, 215));
 		tfnomeProduto.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
+		estoque = new JLabel("Novo Estoque:");
+		estoque.setBounds(20, 95, 120, 30);
+		painel.add(estoque);
+		tfestoque = new JTextField();
+		tfestoque.setBounds(140, 95, 100, 30);
+		painel.add(tfestoque);
+		tfestoque.setBackground(new Color(215, 215, 215));
+		tfestoque.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+		qtdEstoque = new JLabel("Estoque Atual:");
+		qtdEstoque.setBounds(250, 95, 120, 30);
+		painel.add(qtdEstoque);
+		tfqtdEstoque = new JTextField();
+		tfqtdEstoque.setBounds(340, 95, 100, 30);
+		painel.add(tfqtdEstoque);
+		tfqtdEstoque.setBackground(new Color(215, 215, 215));
+		tfqtdEstoque.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+		fornecedor = new JLabel("Fornecedor:");
+		fornecedor.setBounds(20, 130, 120, 30);
+		painel.add(fornecedor);
+		tffornecedor = new JTextField();
+		tffornecedor.setBounds(140, 130, 300, 30);
+		painel.add(tffornecedor);
+		tffornecedor.setBackground(new Color(215, 215, 215));
+		tffornecedor.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+		lucro = new JLabel("Lucro:");
+		lucro.setBounds(20, 165, 120, 30);
+		painel.add(lucro);
 		tflucro = new JTextField();
-		tflucro.setBounds(405, 95, 100, 30);
+		tflucro.setBounds(140, 165, 100, 30);
 		painel.add(tflucro);
 		tflucro.setBackground(new Color(215, 215, 215));
 		tflucro.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-		tfprecoVenda = new JTextField();
-		tfprecoVenda.setBounds(140, 130, 100, 30);
-		painel.add(tfprecoVenda);
-		tfprecoVenda.setEnabled(false);
-		tfprecoVenda.setBackground(new Color(215, 215, 215));
-		tfprecoVenda.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
+		
+		precoUnitario = new JLabel("Preço Unitário:");
+		precoUnitario.setBounds(250, 165, 120, 30);
+		painel.add(precoUnitario);
 		tfprecoUnitario = new JTextField();
-		tfprecoUnitario.setBounds(405, 130, 100, 30);
+		tfprecoUnitario.setBounds(340, 165, 100, 30);
 		painel.add(tfprecoUnitario);
 		tfprecoUnitario.setBackground(new Color(215, 215, 215));
 		tfprecoUnitario.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
+		precoVenda = new JLabel("Preço de Venda:");
+		precoVenda.setBounds(220, 25, 120, 30);
+		painel.add(precoVenda);
+		tfprecoVenda = new JTextField();
+		tfprecoVenda.setBounds(320, 25, 120, 30);
+		painel.add(tfprecoVenda);
+		tfprecoVenda.setBackground(new Color(119,221,119));
+		tfprecoVenda.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+		dtFabricacao = new JLabel("Data de Fabricação:");
+		dtFabricacao.setBounds(20, 200, 120, 30);
+		painel.add(dtFabricacao);
 		tfdtFabricacao = new JTextField();
-		tfdtFabricacao.setBounds(140, 165, 100, 30);
+		tfdtFabricacao.setBounds(140, 200, 120, 30);
 		painel.add(tfdtFabricacao);
 		tfdtFabricacao.setBackground(new Color(215, 215, 215));
 		tfdtFabricacao.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
+		dtValidade = new JLabel("Data de Validade:");
+		dtValidade.setBounds(20, 235, 120, 30);
+		painel.add(dtValidade);
 		tfdtValidade = new JTextField();
-		tfdtValidade.setBounds(405, 165, 100, 30);
+		tfdtValidade.setBounds(140, 235, 120, 30);
 		painel.add(tfdtValidade);
 		tfdtValidade.setBackground(new Color(215, 215, 215));
 		tfdtValidade.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+		rotulos = new JLabel("Cód | Nome | Qtd no Estoque | Fornecedor | Vencimento | Preço | Status:");
+		rotulos.setBounds(20, 340, 600, 30);
+		painel.add(rotulos);
+		rotulos.setForeground(Color.black);
+
 
 		verResultados = new JTextArea();
 		verResultados.setEditable(false);

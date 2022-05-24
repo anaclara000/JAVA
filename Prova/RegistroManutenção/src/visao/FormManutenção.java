@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,14 +28,15 @@ public class FormManutenção extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private JPanel painel;
 	private JLabel id, data, equip, custoHora, tempoGasto;
-	private JTextField tfid, tfdata, tfequip, tfcustoHora , tftempoGasto;
+	private JTextField tfid, tfdata, tfcustoHora , tftempoGasto;
+	private JComboBox cbequip;
 	private DefaultTableModel tableModel;
 	private JButton create, read, update, delete;
 	private JTable table;
 	private JScrollPane rolagem;
 	
-	private String imgIco = "C:\\Users\\Desenvolvimento\\Desktop\\WORKPROJETO\\RegistroManutenção\\assets";
-	private int autoId = ProcessManutenção.manutenção.size() + 1;
+	private String imgIco = "C:\\Users\\Usuario\\Downloads\\Ana\\JAVA\\Prova\\RegistroManutenção\\assets\\logo.png";
+	private int autoId = ProcessManutenção.manutenção.get(ProcessManutenção.manutenção.size() - 1).getId() + 1;
 	private DecimalFormat df = new DecimalFormat("#.00");
 	private final Locale BRASIL = new Locale("pt", "BR");
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -60,9 +62,9 @@ public class FormManutenção extends JFrame{
 		
 		equip = new JLabel("Nome do Produto:");
 		equip.setBounds(20, 60, 120, 30);
-		tfequip = new JTextField();
-		tfequip.setBounds(140, 60, 300, 30);
-		tfequip.setBackground(new Color(215, 215, 215));
+		cbequip = new JComboBox<String>(new String[] { "Equip1", "Equip2", "Equip3" });
+		cbequip.setBounds(140, 60, 300, 30);
+		cbequip.setBackground(new Color(215, 215, 215));
 		
 		data = new JLabel("Data de Hoje:");
 		data.setBounds(20, 95, 120, 30);
@@ -89,7 +91,7 @@ public class FormManutenção extends JFrame{
 		painel.add(data);
 		painel.add(tfdata);
 		painel.add(equip);
-		painel.add(tfequip);
+		painel.add(cbequip);
 		painel.add(custoHora);
 		painel.add(tfcustoHora);
 		painel.add(tempoGasto);
@@ -134,6 +136,7 @@ public class FormManutenção extends JFrame{
 		painel.add(delete);
 		
 		
+		
 		create.addActionListener((ActionListener) new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -161,8 +164,21 @@ public class FormManutenção extends JFrame{
 		
 	}
 	
+	int obterEquipamento(String equipamento) {
+		switch (equipamento) {
+		case "Equip1":
+			return 0;
+		case "Equip2":
+			return 1;
+		case "Equip3":
+			return 2;
+		default:
+			return -1;
+		}
+	}
+	
 	private void cadastrar() {
-		if(tfid.getText().length() != 0 && tfdata.getText().length() != 0 && tfequip.getText().length() != 0 &&
+		if(tfid.getText().length() != 0 && tfdata.getText().length() != 0 &&
 				tfcustoHora.getText().length() != 0 && tftempoGasto.getText().length() != 0) {
 			
 			df.setCurrency(Currency.getInstance(BRASIL));
@@ -178,8 +194,8 @@ public class FormManutenção extends JFrame{
 			}
 
 			ProcessManutenção.manutenção.add(new Manutenção(autoId,  tfdata.getText(),
-					tfequip.getText(), custo, hora));
-			autoId++;
+					cbequip.getSelectedItem().toString(), custo, hora));
+			autoId = ProcessManutenção.manutenção.get(ProcessManutenção.manutenção.size() - 1).getId() + 1;
 			preencherTabela();
 			limparCampos();
 			ProcessManutenção.salvar();
@@ -202,7 +218,7 @@ public class FormManutenção extends JFrame{
 					int indice = ProcessManutenção.manutenção.indexOf(m);
 			tfid.setText(String.format("%d", ProcessManutenção.manutenção.get(indice).getId()));
 			tfdata.setText(sdf.format(ProcessManutenção.manutenção.get(indice).getData()));
-			tfequip.setText(ProcessManutenção.manutenção.get(indice).getEquipamento());
+			cbequip.setSelectedIndex(obterEquipamento(ProcessManutenção.manutenção.get(indice).getEquipamento()));
 			tfcustoHora.setText((String.format("%.2f" , ProcessManutenção.manutenção.get(indice).getCustoHora())));
 			tftempoGasto.setText((String.format("%.2f", ProcessManutenção.manutenção.get(indice).getTempoGasto())));
 			create.setEnabled(false);
@@ -220,9 +236,9 @@ public class FormManutenção extends JFrame{
 		int id = Integer.parseInt(tfid.getText());
 		Manutenção manu = new Manutenção(id);
 		int indice = ProcessManutenção.manutenção.indexOf(manu);
-		if (tfid.getText().length() != 0 && tfdata.getText().length() != 0 && tfequip.getText().length() != 0 &&
+		if (tfid.getText().length() != 0 && tfdata.getText().length() != 0 && 
 				tfcustoHora.getText().length() != 0 && tftempoGasto.getText().length() != 0)  {
-			Manutenção tempManu = new Manutenção(Integer.parseInt(tfid.getText()), tfdata.getText(), tfequip.getText(),(Double.parseDouble(tfcustoHora.getText().replace(",", "."))), (Double.parseDouble(tftempoGasto.getText().replace(",", "."))));
+			Manutenção tempManu = new Manutenção(Integer.parseInt(tfid.getText()), tfdata.getText(), cbequip.getSelectedItem().toString(),(Double.parseDouble(tfcustoHora.getText().replace(",", "."))), (Double.parseDouble(tftempoGasto.getText().replace(",", "."))));
 			for (Manutenção m : ProcessManutenção.manutenção) {
 				if (m.getId() == tempManu.getId()) {
 					m.setId(tempManu.getId());
@@ -232,6 +248,7 @@ public class FormManutenção extends JFrame{
 					m.setCustoHora(tempManu.getCustoHora());
 					
 				}
+			}
 			df.setCurrency(Currency.getInstance(BRASIL));
 			double custo;
 			double hora;
@@ -243,9 +260,6 @@ public class FormManutenção extends JFrame{
 				custo = 0;
 				hora = 0;
 			}
-			
-				ProcessManutenção.manutenção.add(indice, new Manutenção(id,  tfdata.getText(),
-						tfequip.getText(), custo, hora));
 				preencherTabela();
 				limparCampos();
 				ProcessManutenção.salvar();
@@ -255,57 +269,16 @@ public class FormManutenção extends JFrame{
 				delete.setEnabled(false);
 				tfid.setText(String.format("%d", autoId));
 				ProcessManutenção.salvar();
-			}
+			
 		} else {
 			JOptionPane.showMessageDialog(this, "Favor Preencher todas as informações");
 		}
-    }
-
-   
-//	private void alterar() {
-//		if (tfid.getText().length() != 0 && tfdata.getText().length() != 0 && tfequip.getText().length() != 0 &&
-//				tfcustoHora.getText().length() != 0 && tftempoGasto.getText().length() != 0) {
-//			for (Manutenção m : ProcessManutenção.manutenção) {
-//				if (m.getId() == tempPet.getId()) {
-//					p.setId(tempPet.getId());
-//					
-//				}
-//			
-//			df.setCurrency(Currency.getInstance(BRASIL));
-//			double custo;
-//			double hora;
-//			try {
-//				hora = Double.parseDouble(df.parse(tftempoGasto.getText()).toString());
-//				custo = Double.parseDouble(df.parse(tfcustoHora.getText()).toString());
-//			} catch (ParseException e) {
-//				System.out.println(e);
-//				custo = 0;
-//				hora = 0;
-//			}
-//
-//			ProcessManutenção.manutenção.add(new Manutenção(autoId,  tfdata.getText(),
-//					tfequip.getText(), custo, hora));
-//			autoId++;
-//			preencherTabela();
-//			limparCampos();
-//			ProcessManutenção.salvar();
-//			
-//			
-//		} else {
-//			JOptionPane.showMessageDialog(this, "Favor preencher todos os campos.");
-//		}
-//		create.setEnabled(true);
-//		update.setEnabled(false);
-//		delete.setEnabled(false);
-//		tfid.setText(String.format("%d", autoId));
-//		ProcessManutenção.salvar();
-//	}
-//}
+	}
 	
 	private void limparCampos() {
 		tfid.setText(String.format("%d",autoId));
 		tfdata.setText(null);
-		tfequip.setText(null);
+		cbequip.setSelectedIndex(0);
 		tfcustoHora.setText(null);
 		tftempoGasto.setText(null);
 
@@ -325,19 +298,25 @@ public class FormManutenção extends JFrame{
 
 	
 	private void excluir() {
-		int id = Integer.parseInt(tfid.getText());
-		Manutenção manu = new Manutenção(id);
-		int indice = ProcessManutenção.manutenção.indexOf(manu);
-		ProcessManutenção.manutenção.remove(indice);
+	if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja EXCLUIR esse Produto?") == 0) {
+		Manutenção prodTemp = null;
+		for (Manutenção m : ProcessManutenção.manutenção) {
+			if (m.getId() == Integer.parseInt(tfid.getText())) {
+				prodTemp = m;
+			}
+		}
+
+		ProcessManutenção.manutenção.remove(ProcessManutenção.manutenção.indexOf(prodTemp));
+
 		preencherTabela();
 		limparCampos();
+		ProcessManutenção.salvar();
+
 		create.setEnabled(true);
 		update.setEnabled(false);
 		delete.setEnabled(false);
-		tfid.setText(String.format("%d", autoId));
-		ProcessManutenção.salvar();
 	}
-	
+}
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == create) {
