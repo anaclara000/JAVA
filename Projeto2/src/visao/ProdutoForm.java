@@ -33,9 +33,9 @@ public class ProdutoForm extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private static final File path = null;
 	private JPanel painel;
-	private JLabel text, codigoProduto, estoque, nomeProduto, lucro, precoVenda, precoUnitario, dtFabricacao, dtValidade,
+	private JLabel lbFundo,ftProd, text, codigoProduto, estoque, nomeProduto, lucro, precoVenda, precoUnitario, dtFabricacao, dtValidade,
 			rotulos, fornecedor, imagem;
-	private JTextField tftext, tfcodigoProduto, tfestoque, tfnomeProduto, tflucro, tfprecoVenda, tfprecoUnitario,
+	private JTextField tfcodigoProduto, tfestoque, tfnomeProduto, tflucro, tfprecoVenda, tfprecoUnitario,
 			tfdtFabricacao, tfdtValidade, tffornecedor;
 	private JScrollPane rolagem;
 	private JTextArea verResultados;
@@ -46,153 +46,179 @@ public class ProdutoForm extends JFrame implements ActionListener {
 	private Image image;
 	private Image newImg;
 	private String texto = "";
+	private String [] fundo = {".\\assets\\2.png"};
+	private ImageIcon icon;
 
-	private final Color C1 = Color.orange;
-	private final Color C2 = new Color(238, 238, 238);
+	private final Color C1 = new Color(238, 238, 238);
+	private final Color C2 = new Color(180,112,54);
 
 	private final Locale BRASIL = new Locale("pt", "BR");
 	private DecimalFormat df = new DecimalFormat("#.00");
 
 	ProdutoForm() {
 		setTitle("Mercado Dois Irmãos");
-		setBounds(100, 100, 800, 650);
+		setBounds(100, 100, 800, 720);
 		setIconImage(new ImageIcon(imgIco).getImage());
 		painel = new JPanel();
+		painel.setBackground(new Color(255,255,255));
 		// cor de fundo
-		painel.setBackground(new Color(153, 204, 255));
 		setContentPane(painel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 		
 		text = new JLabel("Cadastro e Consulta");
-		text.setBounds(310, 5, 250, 30);
-		text.setFont(new Font("Arial",Font.CENTER_BASELINE,20));
+		text.setBounds(290, 5, 400, 30);
+		text.setFont(new Font("OpenSans",Font.CENTER_BASELINE,25));
 		text.setForeground(new Color(180,112,54));
 		painel.add(text);
 
 		codigoProduto = new JLabel("Código do produto:");
 		codigoProduto.setBounds(20, 45, 120, 30);
+		codigoProduto.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(codigoProduto);
 		tfcodigoProduto = new JTextField(String.format("%d", autoId));
 		tfcodigoProduto.setEditable(false);
 		tfcodigoProduto.setBounds(140, 45, 300, 30);
 		painel.add(tfcodigoProduto);
-		tfcodigoProduto.setBackground(C2);
+		tfcodigoProduto.setBackground(C1);
+		tfcodigoProduto.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+		
 
-		nomeProduto = new JLabel("Nome do Produto:");
+		nomeProduto = new JLabel("Nome do produto:");
 		nomeProduto.setBounds(20, 80, 120, 30);
+		nomeProduto.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(nomeProduto);
 		tfnomeProduto = new JTextField();
 		tfnomeProduto.setBounds(140, 80, 300, 30);
 		painel.add(tfnomeProduto);
-		tfnomeProduto.setBackground(C2);
-		tfnomeProduto.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		tfnomeProduto.setBackground(C1);
+		tfnomeProduto.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
 		estoque = new JLabel("Estoque:");
 		estoque.setBounds(20, 115, 120, 30);
+		estoque.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(estoque);
 		tfestoque = new JTextField();
-		tfestoque.setBounds(140, 115, 100, 30);
+		tfestoque.setBounds(140, 115, 300, 30);
 		painel.add(tfestoque);
-		tfestoque.setBackground(C2);
-		tfestoque.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		tfestoque.setBackground(C1);
+		tfestoque.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
 		fornecedor = new JLabel("Fornecedor:");
 		fornecedor.setBounds(20, 150, 120, 30);
+		fornecedor.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(fornecedor);
 		tffornecedor = new JTextField();
 		tffornecedor.setBounds(140, 150, 300, 30);
 		painel.add(tffornecedor);
-		tffornecedor.setBackground(C2);
-		tffornecedor.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		tffornecedor.setBackground(C1);
+		tffornecedor.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
 		lucro = new JLabel("Margem de lucro:");
 		lucro.setBounds(20, 185, 120, 30);
+		lucro.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(lucro);
 		tflucro = new JTextField();
-		tflucro.setBounds(140, 185, 100, 30);
+		tflucro.setBounds(140, 185, 300, 30);
 		painel.add(tflucro);
-		tflucro.setBackground(C2);
-		tflucro.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		tflucro.setBackground(C1);
+		tflucro.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
 		precoUnitario = new JLabel("Preço Unitário:");
 		precoUnitario.setBounds(20, 220, 120, 30);
+		precoUnitario.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(precoUnitario);
 		tfprecoUnitario = new JTextField();
-		tfprecoUnitario.setBounds(140, 220, 100, 30);
+		tfprecoUnitario.setBounds(140, 220, 300, 30);
 		painel.add(tfprecoUnitario);
-		tfprecoUnitario.setBackground(C2);
-		tfprecoUnitario.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		tfprecoUnitario.setBackground(C1);
+		tfprecoUnitario.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
 
 		dtFabricacao = new JLabel("Data de Fabricação:");
 		dtFabricacao.setBounds(20, 255, 120, 30);
+		dtFabricacao.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(dtFabricacao);
 		tfdtFabricacao = new JTextField();
-		tfdtFabricacao.setBounds(140, 255, 120, 30);
+		tfdtFabricacao.setBounds(140, 255, 300, 30);
 		painel.add(tfdtFabricacao);
-		tfdtFabricacao.setBackground(C2);
-		tfdtFabricacao.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		tfdtFabricacao.setBackground(C1);
+		tfdtFabricacao.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
 		dtValidade = new JLabel("Data de Validade:");
-		dtValidade.setBounds(20, 295, 120, 30);
+		dtValidade.setBounds(20, 290, 120, 30);
+		dtValidade.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(dtValidade);
 		tfdtValidade = new JTextField();
-		tfdtValidade.setBounds(140, 295, 120, 30);
+		tfdtValidade.setBounds(140, 290, 300, 30);
 		painel.add(tfdtValidade);
-		tfdtValidade.setBackground(C2);
-		tfdtValidade.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		tfdtValidade.setBackground(C1);
+		tfdtValidade.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 		
 		precoVenda = new JLabel("Preço de Venda:");
-		precoVenda.setBounds(20, 330, 120, 30);
+		precoVenda.setBounds(20, 325, 120, 30);
+		precoVenda.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(precoVenda);
 		tfprecoVenda = new JTextField();
-		tfprecoVenda.setBounds(140, 330, 120, 30);
+		tfprecoVenda.setBounds(140, 325, 300, 30);
 		painel.add(tfprecoVenda);
 		tfprecoVenda.setEditable(false);
-		tfprecoVenda.setBackground(new Color(119, 221, 119));
-		tfprecoVenda.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		tfprecoVenda.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+		tfprecoVenda.setBackground(C2);
+		
+		ftProd = new JLabel("Foto do produto");
+		ftProd.setBounds(500, 40, 260, 30);
+		ftProd.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,20));
+		painel.add(ftProd);
+		
+		lbFundo = new JLabel("");
+		lbFundo.setBounds(690,0, 160, 70);
+		fundo(0);
+		painel.add(lbFundo);
+		
 
 		rotulos = new JLabel(
-				"Cód           |          Nome         |     Estoque     |       Fornecedor       |   Vencimento  |        Preço       |         Status:");
-		rotulos.setBounds(20, 400, 900, 30);
+				"Cód       |       Nome      |     Estoque     |     Fornecedor    |   Vencimento  |      Preço     |       Status:");
+		rotulos.setBounds(20, 410, 900, 30);
+		rotulos.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		painel.add(rotulos);
 		rotulos.setForeground(Color.black);
 
 		verResultados = new JTextArea();
 		verResultados.setEditable(false);
 		verResultados.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+		verResultados.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
 		preencherAreaDeTexto();
 		rolagem = new JScrollPane(verResultados);
-		rolagem.setBounds(20, 410, 740, 200);
+		rolagem.setBounds(20, 440, 740, 200);
 		painel.add(rolagem);
 
 		imagem = new JLabel();
-		imagem.setBounds(500, 130, 260, 200);
+		imagem.setBounds(500, 70, 260, 245);
 		painel.add(imagem);
 		imagem.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
 		create = new JButton("Cadastrar");
-		create.setBounds(20, 370, 110, 30);
+		create.setBounds(140, 370, 110, 30);
 		painel.add(create);
 
 		read = new JButton("Buscar");
-		read.setBounds(140, 370, 110, 30);
+		read.setBounds(260, 370, 110, 30);
 		painel.add(read);
 
 		update = new JButton("Atualizar");
-		update.setBounds(260, 370, 110, 30);
+		update.setBounds(380, 370, 110, 30);
 		update.setEnabled(false);
 		painel.add(update);
 
 		delete = new JButton("Excluir");
-		delete.setBounds(380, 370, 110, 30);
+		delete.setBounds(500, 370, 110, 30);
 
 		delete.setEnabled(false);
 		painel.add(delete);
 
 		carregar = new JButton("Carregar imagem");
-		carregar.setBounds(500, 90, 260, 30);
+		carregar.setBounds(500, 325, 260, 30);
 		painel.add(carregar);
 
 		// Ouvir os eventos dos Botões, ComboBox e outros
@@ -206,6 +232,11 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		update.addActionListener(this);
 		delete.addActionListener(this);
 		carregar.addActionListener(this);
+	}
+	
+	private void fundo (int indice) {
+		icon = new ImageIcon(new ImageIcon(fundo[indice]).getImage().getScaledInstance(70, 70, 70));
+		lbFundo.setIcon(icon);
 	}
 
 	private Border BorderFactory(Color color) {

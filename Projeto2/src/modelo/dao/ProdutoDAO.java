@@ -22,7 +22,7 @@ public class ProdutoDAO {
 	private Produto produto;
 	private String arquivo = System.getProperty("user.dir")+"\\bd\\produtos.csv";
 	private String caminhoImg = System.getProperty("user.dir")+"\\imgs\\";
-	private String path = "C:\\Users\\DESENVOLVIMENTO\\Desktop\\logic\\FPOO\\workform\\Projeto2\\dados\\entrada.csv";
+	private String path = ".\\dados\\entrada.csv";
 	
 	public ArrayList<Produto> ler() {
 		ArrayList<Produto> linhas = new ArrayList<>();
