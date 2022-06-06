@@ -12,9 +12,9 @@ import java.util.Currency;
 import java.util.Locale;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,10 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
-import controle.ProdutoProcess;
+import controle.OrcamentoProcess;
+import dao.ProdutoDAO;
 import modelo.Produto;
 
 public class ProdutoForm extends JFrame implements ActionListener {
@@ -33,15 +33,15 @@ public class ProdutoForm extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private static final File path = null;
 	private JPanel painel;
-	private JLabel lbFundo,ftProd, text, codigoProduto, estoque, nomeProduto, lucro, precoVenda, precoUnitario, dtFabricacao, dtValidade,
+	private JLabel lbImagem, lbFundo,ftProd, text, codigoProduto, estoque, nomeProduto, lucro, precoVenda, precoUnitario, dtFabricacao, dtValidade,
 			rotulos, fornecedor, imagem;
 	private JTextField tfcodigoProduto, tfestoque, tfnomeProduto, tflucro, tfprecoVenda, tfprecoUnitario,
 			tfdtFabricacao, tfdtValidade, tffornecedor;
 	private JScrollPane rolagem;
 	private JTextArea verResultados;
-	private JButton create, read, update, delete, carregar, btSalvar;
+	private JButton create, read, update, delete, carregar, btSalvar, addImg;
 	private String imgIco = ".\\assets\\2.png";
-	private int autoId = ProdutoProcess.produtos.size() + 1;
+	private int autoId = OrcamentoProcess.produtos.size() + 1;
 	private ImageIcon img;
 	private Image image;
 	private Image newImg;
@@ -51,6 +51,7 @@ public class ProdutoForm extends JFrame implements ActionListener {
 
 	private final Color C1 = new Color(238, 238, 238);
 	private final Color C2 = new Color(180,112,54);
+
 
 	private final Locale BRASIL = new Locale("pt", "BR");
 	private DecimalFormat df = new DecimalFormat("#.00");
@@ -65,7 +66,7 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		setContentPane(painel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
-		
+
 		text = new JLabel("Cadastro e Consulta");
 		text.setBounds(290, 5, 400, 30);
 		text.setFont(new Font("OpenSans",Font.CENTER_BASELINE,25));
@@ -154,7 +155,7 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		painel.add(tfdtValidade);
 		tfdtValidade.setBackground(C1);
 		tfdtValidade.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
-		
+
 		precoVenda = new JLabel("Preço de Venda:");
 		precoVenda.setBounds(20, 325, 120, 30);
 		precoVenda.setFont(new Font("OpenSans",Font.LAYOUT_LEFT_TO_RIGHT,13));
@@ -176,7 +177,6 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		fundo(0);
 		painel.add(lbFundo);
 		
-
 		rotulos = new JLabel(
 				"Cód       |       Nome      |     Estoque     |     Fornecedor    |   Vencimento  |      Preço     |       Status:");
 		rotulos.setBounds(20, 410, 900, 30);
@@ -192,46 +192,39 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		rolagem = new JScrollPane(verResultados);
 		rolagem.setBounds(20, 440, 740, 200);
 		painel.add(rolagem);
-
-		imagem = new JLabel();
-		imagem.setBounds(500, 70, 260, 245);
-		painel.add(imagem);
-		imagem.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+		
+		lbImagem = new JLabel();
+		lbImagem.setBounds(500, 130, 260, 200);
+		painel.add(lbImagem);
+		lbImagem.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
 		create = new JButton("Cadastrar");
 		create.setBounds(140, 370, 110, 30);
 		painel.add(create);
+		create.addActionListener(this);
 
 		read = new JButton("Buscar");
 		read.setBounds(260, 370, 110, 30);
 		painel.add(read);
+		read.addActionListener(this);
 
 		update = new JButton("Atualizar");
 		update.setBounds(380, 370, 110, 30);
 		update.setEnabled(false);
 		painel.add(update);
+		update.addActionListener(this);
 
 		delete = new JButton("Excluir");
 		delete.setBounds(500, 370, 110, 30);
-
 		delete.setEnabled(false);
 		painel.add(delete);
-
-		carregar = new JButton("Carregar imagem");
-		carregar.setBounds(500, 325, 260, 30);
-		painel.add(carregar);
-
-		// Ouvir os eventos dos Botões, ComboBox e outros
-//		create.setBackground(C1);
-//		read.setBackground(C1);
-//		update.setBackground(C1);
-//		delete.setBackground(C1);
-
-		create.addActionListener(this);
-		read.addActionListener(this);
-		update.addActionListener(this);
 		delete.addActionListener(this);
-		carregar.addActionListener(this);
+		
+		addImg = new JButton("Adicionar imagem");
+		addImg.setBounds(500, 90, 260, 30);
+		addImg.setEnabled(false);
+		painel.add(addImg);
+		addImg.addActionListener(this);
 	}
 	
 	private void fundo (int indice) {
@@ -239,19 +232,12 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		lbFundo.setIcon(icon);
 	}
 
-	private Border BorderFactory(Color color) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	// CREATE - CRUD
 	private void cadastrar() {
 		if (tfcodigoProduto.getText().length() != 0 && tfestoque.getText().length() != 0
 				&& tfnomeProduto.getText().length() != 0 && tffornecedor.getText().length() != 0
 				&& tflucro.getText().length() != 0 && tfprecoUnitario.getText().length() != 0
 				&& tfdtFabricacao.getText().length() != 0 && tfdtValidade.getText().length() != 0) {
 
-			// Converter o peso no formato Brasileiro usando virgula como decimal
 			df.setCurrency(Currency.getInstance(BRASIL));
 			float pU;
 			try {
@@ -261,11 +247,11 @@ public class ProdutoForm extends JFrame implements ActionListener {
 				pU = 0;
 			}
 
-			ProdutoProcess.produtos.add(new Produto(autoId, tfnomeProduto.getText(),
+			OrcamentoProcess.produtos.add(new Produto(autoId, tfnomeProduto.getText(),
 					Integer.parseInt(tfestoque.getText()), tffornecedor.getText(), Integer.parseInt(tflucro.getText()),
 					tfdtFabricacao.getText(), tfdtValidade.getText(), pU));
 			autoId++;
-			ProdutoProcess.salvar();
+			OrcamentoProcess.salvar();
 			preencherAreaDeTexto();
 			limparCampos();
 		} else {
@@ -287,13 +273,12 @@ public class ProdutoForm extends JFrame implements ActionListener {
 
 	private void preencherAreaDeTexto() {
 		texto = ""; // Limpar a área de texto antes de preenher
-		for (Produto p : ProdutoProcess.produtos) {
+		for (Produto p : OrcamentoProcess.produtos) {
 			texto += p.toString();
 		}
 		verResultados.setText(texto);
 	}
 
-	// READ - CRUD
 	private void buscar() {
 		String entrada = JOptionPane.showInputDialog(this, "Digite o código do produto:");
 
@@ -310,21 +295,23 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		if (isNumeric) {
 			int id = Integer.parseInt(entrada);
 			Produto prod = new Produto(id);
-			if (ProdutoProcess.produtos.contains(prod)) {
-				int indice = ProdutoProcess.produtos.indexOf(prod);
-				tfcodigoProduto.setText(ProdutoProcess.produtos.get(indice).getCodProduto("s"));
-				tfestoque.setText(ProdutoProcess.produtos.get(indice).getEstoque("s"));
-				tfnomeProduto.setText(ProdutoProcess.produtos.get(indice).getNomeProduto());
-				tffornecedor.setText(ProdutoProcess.produtos.get(indice).getFornecedor());
-				tflucro.setText(ProdutoProcess.produtos.get(indice).getLucro("s"));
-				tfprecoUnitario.setText(ProdutoProcess.produtos.get(indice).getPrecoUnitario("s"));
-				tfdtFabricacao.setText(ProdutoProcess.produtos.get(indice).getDtFabricacao("s"));
-				tfdtValidade.setText(ProdutoProcess.produtos.get(indice).getDtValidade("s"));
-				tfprecoVenda.setText(ProdutoProcess.produtos.get(indice).valorTotal());
+			if (OrcamentoProcess.produtos.contains(prod)) {
+				int indice = OrcamentoProcess.produtos.indexOf(prod);
+				tfcodigoProduto.setText(OrcamentoProcess.produtos.get(indice).getCodProduto("s"));
+				tfestoque.setText(OrcamentoProcess.produtos.get(indice).getEstoque("s"));
+				tfnomeProduto.setText(OrcamentoProcess.produtos.get(indice).getNomeProduto());
+				tffornecedor.setText(OrcamentoProcess.produtos.get(indice).getFornecedor());
+				tflucro.setText(OrcamentoProcess.produtos.get(indice).getLucro("s"));
+				tfprecoUnitario.setText(OrcamentoProcess.produtos.get(indice).getPrecoUnitario("s"));
+				tfdtFabricacao.setText(OrcamentoProcess.produtos.get(indice).getDtFabricacao("s"));
+				tfdtValidade.setText(OrcamentoProcess.produtos.get(indice).getDtValidade("s"));
+				tfprecoVenda.setText(OrcamentoProcess.produtos.get(indice).valorTotal("s"));
+				lbImagem.setText(ProdutoDAO.getImgPath(prod));
 				create.setEnabled(false);
 				update.setEnabled(true);
 				delete.setEnabled(true);
-				ProdutoProcess.salvar();
+				addImg.setEnabled(true);
+				OrcamentoProcess.salvar();
 			} else {
 				JOptionPane.showMessageDialog(this, "Produto não encontrado");
 			}
@@ -332,17 +319,15 @@ public class ProdutoForm extends JFrame implements ActionListener {
 
 	}
 
-	// UPDATE - CRUD
 	private void alterar() {
 		int id = Integer.parseInt(tfcodigoProduto.getText());
 		Produto prod = new Produto(id);
-		int indice = ProdutoProcess.produtos.indexOf(prod);
+		int indice = OrcamentoProcess.produtos.indexOf(prod);
 		if (tfcodigoProduto.getText().length() != 0 && tfestoque.getText().length() != 0
 				&& tfnomeProduto.getText().length() != 0 && tffornecedor.getText().length() != 0
 				&& tflucro.getText().length() != 0 && tfprecoUnitario.getText().length() != 0
 				&& tfdtFabricacao.getText().length() != 0 && tfdtValidade.getText().length() != 0) {
 
-			// Converter o peso no formato Brasileiro usando virgula como decimal
 			df.setCurrency(Currency.getInstance(BRASIL));
 			float pU;
 			try {
@@ -352,7 +337,7 @@ public class ProdutoForm extends JFrame implements ActionListener {
 				pU = 0;
 			}
 
-			ProdutoProcess.produtos.set(indice,
+			OrcamentoProcess.produtos.set(indice,
 					new Produto(Integer.parseInt(tfcodigoProduto.getText()), tfnomeProduto.getText(),
 							Integer.parseInt(tfestoque.getText()), tffornecedor.getText(),
 							Integer.parseInt(tflucro.getText()), tfdtFabricacao.getText(), tfdtValidade.getText(), pU));
@@ -365,48 +350,21 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		update.setEnabled(false);
 		delete.setEnabled(false);
 		tfcodigoProduto.setText(String.format("%d", autoId));
-		ProdutoProcess.salvar();
+		OrcamentoProcess.salvar();
 	}
 
-	// DELETE - CRUD
 	private void excluir() {
 		int id = Integer.parseInt(tfcodigoProduto.getText());
 		Produto prod = new Produto(id);
-		int indice = ProdutoProcess.produtos.indexOf(prod);
-		ProdutoProcess.produtos.remove(indice);
+		int indice = OrcamentoProcess.produtos.indexOf(prod);
+		OrcamentoProcess.produtos.remove(indice);
 		preencherAreaDeTexto();
 		limparCampos();
 		create.setEnabled(true);
 		update.setEnabled(false);
 		delete.setEnabled(false);
 		tfcodigoProduto.setText(String.format("%d", autoId));
-		ProdutoProcess.salvar();
-	}
-
-	private void carregarImagem() {
-		File path = null;
-		JFileChooser fc = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Imagens tipo: png, jpg ou jpeg",
-				new String[] { "png", "jpg", "jpeg" });
-		fc.setFileFilter(filter);
-		if (fc.showOpenDialog(this) != 1) {
-			path = fc.getSelectedFile();
-			img = new ImageIcon(path.getAbsolutePath());
-			imagem.setIcon(new ImageIcon(img.getImage().getScaledInstance(300, 250, java.awt.Image.SCALE_SMOOTH)));
-		}
-		int id = Integer.parseInt(tfcodigoProduto.getText());
-		Produto prod = new Produto(id);
-		if (path != null) {
-			if (ProdutoProcess.getPd().saveImg(prod, path)) {
-				JOptionPane.showMessageDialog(this, "Alterada com sucesso.");
-			}
-		} else {
-			dispose();
-		}
-	}
-
-	public void setModal(boolean b) {
-
+		OrcamentoProcess.salvar();
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -422,28 +380,16 @@ public class ProdutoForm extends JFrame implements ActionListener {
 		if (e.getSource() == delete) {
 			excluir();
 		}
-		if (e.getSource() == carregar) {
-			carregarImagem();
-		}
-		if (btSalvar == e.getSource()) {
+		if (e.getSource() == addImg) {
 			int id = Integer.parseInt(tfcodigoProduto.getText());
 			Produto prod = new Produto(id);
-			int indice = ProdutoProcess.produtos.indexOf(prod);
-			if (path != null) {
-				if (ProdutoProcess.getPd().saveImg(prod, path)) {
-					JOptionPane.showMessageDialog(this, "Alterada com sucesso.");
-					this.dispose();
-				}
-			} else {
-				dispose();
-			}
-		} else {
-			this.dispose();
+			int indice = OrcamentoProcess.produtos.indexOf(prod);
+			CadastrarImagem CI = new CadastrarImagem(indice);
+			CI.setModal(true);
+			CI.setVisible(true);
 		}
 	}
 
-	public static void main(String[] agrs) {
-		ProdutoProcess.abrir();
-		new ProdutoForm().setVisible(true);
+	public void setModal(boolean b) {
 	}
 }

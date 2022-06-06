@@ -1,0 +1,2 @@
+icon = new ImageIcon(new ImageIcon(ProdutoDAO.getImgPath(prod)).getImage().getScaledInstance(350, 240, 100));
+			lbImagem.setIcon(icon);

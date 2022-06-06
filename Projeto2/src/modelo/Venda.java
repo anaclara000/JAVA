@@ -1,47 +1,73 @@
 package modelo;
 
-import java.util.Vector;
-
 public class Venda {
 
-	public String cabecalho() {
-		// TODO Auto-generated method stub
-		return null;
+	private int num;
+	private String data;
+	private String hora;
+	private Produto produto;
+	private int quantidade;
+
+	// GETs && SETss
+	public int getNum() {
+		return num;
 	}
 
-	public Vector<?> getStringVetor() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setNum(int num) {
+		this.num = num;
 	}
 
-	public void setQuantidade(int parseInt) {
-		// TODO Auto-generated method stub
-		
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public String getHora() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+
+	public Produto getProduto() {
+		return produto;
 	}
 
 	public void setProduto(Produto produto) {
-		// TODO Auto-generated method stub
-		
+		this.produto = produto;
 	}
 
-	public void setNum(int parseInt) {
-		// TODO Auto-generated method stub
-		
+	public int getQuantidade() {
+		return quantidade;
 	}
 
-	public void setData(String valueAt) {
-		// TODO Auto-generated method stub
-		
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
 	}
 
-	public void setHora(String valueAt) {
-		// TODO Auto-generated method stub
-		
+	// Outros Métodos
+	public double getSubtotal() {
+		return this.quantidade * this.produto.getPrecoUnitario();
 	}
 
-	public Object getQuantidade() {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public String toString() {
+		return "Compra [num=" + num + ", data=" + data + ", hora=" + hora + ", produto=" + produto.getCodProduto()
+				+ ", preco =" + produto.getPrecoUnitario() + ", quantidade=" + quantidade + "]";
 	}
 
+	//Metodo para enviar os dados para um arquivo de texto
+	public String toCSV() {
+		return num + ";" + data + ";" + hora + ";" + produto.getCodProduto() + ";" + produto.getPrecoUnitario() + ";" + quantidade
+				+ "\r\n";
+	}
+
+	public String[] getStringVetor() {
+		return new String[] { "" + num, data, hora, "" + produto.getCodProduto(), "" + produto.getPrecoUnitario(), "" + quantidade,
+				String.format("%.2f", getSubtotal()) };
+	}
 }

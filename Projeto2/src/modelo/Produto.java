@@ -10,6 +10,8 @@ import java.util.Objects;
 
 import javax.swing.ImageIcon;
 
+import dao.ProdutoDAO;
+
 public class Produto {
 
 	private int codProduto;
@@ -20,7 +22,7 @@ public class Produto {
 	private float precoUnitario;
 	private Date dtFabricacao;
 	private Date dtValidade;
-//	private ImageIcon icon;
+	Produto prod;
 
 	private final Locale BRASIL = new Locale("pt", "BR");
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -74,7 +76,7 @@ public class Produto {
 	// Getters && Setters
 
 	public Produto(int parseInt, double parseDouble) {
-		
+
 	}
 
 	public int getCodProduto() {
@@ -165,15 +167,14 @@ public class Produto {
 		return sdf.format(dtValidade);
 	}
 
-	// Define o "id" como campo Chave
-	@Override
-	public int hashCode() {
-		return Objects.hash(codProduto);
-	}
-
-	public String valorTotal() {
+	public String valorTotal(String s) {
 		double valor = (precoUnitario * (getLucro() / 100)) + precoUnitario;
 		return String.format("%.2f", valor);
+	}
+
+	public double valorTotal() {
+		double valor = (precoUnitario * (getLucro() / 100)) + precoUnitario;
+		return valor;
 	}
 
 	public String status() {
@@ -183,6 +184,12 @@ public class Produto {
 		} else {
 			return "Adequado";
 		}
+	}
+
+	// Define o "id" como campo Chave
+	@Override
+	public int hashCode() {
+		return Objects.hash(codProduto);
 	}
 
 	// Define o "id" como campo Chave
@@ -198,15 +205,48 @@ public class Produto {
 		return codProduto == other.codProduto;
 	}
 
+	public boolean darBaixa(int quantidade) {
+		if (quantidade > this.estoque) {
+			return false;
+		} else {
+			this.estoque -= quantidade;
+			return true;
+		}
+	}
+
+//	public String getImagem() {
+//	String aa = null;
+//	try {
+//		aa = ProdutoDAO.getImgPath(prod);
+//	} catch (Exception e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//	return aa;
+//	}
+	public double getSubtotal() {
+		return this.valorTotal() * this.estoque;
+	}
+
+	public String[] getStringVetor() {
+		return new String[] { codProduto + "", nomeProduto, valorTotal() + "", estoque + "",
+				String.format("%.2f", getSubtotal()) };
+	}
+
 	@Override
 	public String toString() {
 		return codProduto + "\t" + nomeProduto + "\t" + "   " + estoque + " \t" + fornecedor + "\t" + getDtValidade("s")
-				+ "\t" + "R$ " + valorTotal() + "\t" + status() + "\n";
+				+ "\t" + "R$ " + valorTotal("s") + "\t" + status() + "\n";
 	}
 
 	public String toCSV() {
 		return codProduto + ";" + nomeProduto + ";" + estoque + ";" + fornecedor + ";" + lucro + ";"
-				+ getDtFabricacao("s") + ";" + getDtValidade("s") + ";" + getPrecoUnitario("s") + ";" + valorTotal()
+				+ getDtFabricacao("s") + ";" + getDtValidade("s") + ";" + getPrecoUnitario("s") + ";" + valorTotal("s")
 				+ "\n";
+	}
+
+	public int getQuantidade() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

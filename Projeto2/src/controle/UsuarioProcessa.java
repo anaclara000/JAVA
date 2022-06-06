@@ -1,7 +1,8 @@
 package controle;
 
 import java.util.ArrayList;
-import modelo.dao.UsuarioDAO;
+
+import dao.UsuarioDAO;
 import modelo.Usuario;
 import uteis.Criptografia;
 
